@@ -11,6 +11,7 @@ import { tryImportNodeRdkafka } from "./tryImport";
 export interface IKafkaBaseOptions {
     numberOfPartitions: number;
     replicationFactor: number;
+    sslCACertLocation?: string;
 }
 
 export interface IKafkaEndpoints {
@@ -20,6 +21,7 @@ export interface IKafkaEndpoints {
 
 export abstract class RdkafkaBase extends EventEmitter {
     protected readonly kafka: typeof kafkaTypes;
+    protected readonly sslOptions?: kafkaTypes.ConsumerGlobalConfig;
     private readonly options: IKafkaBaseOptions;
 
     constructor(
@@ -36,11 +38,26 @@ export abstract class RdkafkaBase extends EventEmitter {
         }
 
         this.kafka = kafka;
+        console.log(`[KAFKA FEATURES]: ${kafka.features}`);
         this.options = {
             ...options,
             numberOfPartitions: options?.numberOfPartitions ?? 32,
             replicationFactor: options?.replicationFactor ?? 3,
         };
+
+        // In RdKafka, we can check what features are enabled using kafka.features. If "ssl" is listed,
+        // it means RdKafka has been built with support for SSL.
+        const rdKafkaHasSSLEnabled =
+            kafka.features.filter((feature) => feature.toLowerCase().indexOf("ssl") >= 0).length > 0;
+
+        if (rdKafkaHasSSLEnabled && options?.sslCACertLocation) {
+            this.sslOptions = {
+                "security.protocol": "ssl",
+                "ssl.ca.location": options?.sslCACertLocation,
+            };
+        }
+
+        console.log(`[RDKAFKA SSL OPTIONS]: ${JSON.stringify(this.sslOptions)}`);
 
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         this.initialize();
@@ -64,10 +81,15 @@ export abstract class RdkafkaBase extends EventEmitter {
     }
 
     protected async ensureTopics() {
-        const adminClient = this.kafka.AdminClient.create({
+        const options: kafkaTypes.GlobalConfig = {
             "client.id": `${this.clientId}-admin`,
             "metadata.broker.list": this.endpoints.kafka.join(","),
-        });
+            ...this.sslOptions,
+        };
+
+        console.log(`[RDKAFKA ADMIN CLIENT OPTIONS]: ${JSON.stringify(options)}`);
+
+        const adminClient = this.kafka.AdminClient.create(options);
 
         const newTopic: kafkaTypes.NewTopic = {
             topic: this.topic,

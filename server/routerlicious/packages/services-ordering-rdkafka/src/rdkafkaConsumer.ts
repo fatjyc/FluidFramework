@@ -83,7 +83,10 @@ export class RdkafkaConsumer extends RdkafkaBase implements IConsumer {
 			"offset_commit_cb": true,
 			"rebalance_cb": this.consumerOptions.optimizedRebalance ? this.rebalance.bind(this) : true,
 			...this.consumerOptions.additionalOptions,
+			...this.sslOptions,
 		};
+
+		console.log(`[RDKAFKA ALL CONSUMER OPTIONS]: ${JSON.stringify(options)}`);
 
 		const consumer: kafkaTypes.KafkaConsumer = this.consumer =
 			new this.kafka.KafkaConsumer(options, { "auto.offset.reset": "latest" });
