@@ -4,7 +4,7 @@ imagePullPolicy: IfNotPresent
 
 historian:
   name: historian
-  image: fluidcr.azurecr.io/build/fluidframework/routerlicious/historian:latest
+  image: cloudstudio-devops-docker.pkg.coding.net/artifacts/routerlicious/historian:latest
   redis:
     url: redis_url
     port: 6379
@@ -30,7 +30,7 @@ historian:
 
 gitrest:
   name: gitrest
-  image: fluidcr.azurecr.io/build/fluidframework/routerlicious/gitrest:latest
+  image: cloudstudio-devops-docker.pkg.coding.net/artifacts/routerlicious/gitrest:latest
   mode: latest
   persistence:
     storageClass: managed-premium
@@ -39,4 +39,4 @@ gitrest:
 
 gitssh:
   name: gitssh
-  image: fluidcr.azurecr.io/build/fluidframework/routerlicious/gitssh:latest
+  image: cloudstudio-devops-docker.pkg.coding.net/artifacts/routerlicious/gitssh:latest

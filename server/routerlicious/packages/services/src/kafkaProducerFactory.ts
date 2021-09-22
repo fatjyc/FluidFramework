@@ -22,6 +22,7 @@ export function createProducer(
     let producer: IProducer;
 
     if (type === "rdkafka") {
+        winston.info(`connect rdkafka kafaEndPoint: ${kafkaEndPoint}`);
         producer = new RdkafkaProducer(
             { kafka: [kafkaEndPoint] },
             clientId,
@@ -37,6 +38,7 @@ export function createProducer(
             }
         });
     } else {
+        winston.info(`connect kafaEndPoint: ${kafkaEndPoint}`);
         producer =  new KafkaNodeProducer(
             { kafkaHost: kafkaEndPoint },
             clientId,

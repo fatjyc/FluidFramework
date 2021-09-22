@@ -25,7 +25,7 @@
     "kafka": {
         "lib": {
             "name": "rdkafka",
-            "endpoint": "kafka:9092",
+            "endpoint": "kafka-service0:9092",
             "producerPollIntervalMs": 10,
             "numberOfPartitions": 8,
             "replicationFactor": 1,
@@ -158,21 +158,10 @@
     },
     "foreman": {
         "alfred": "http://alfred:3000",
-        "queues": [
-            "paparazziQueue",
-            "augloopQueue",
-            "headlessQueue"
-        ],
+        "queues": ["paparazziQueue", "augloopQueue", "headlessQueue"],
         "permissions": {
-            "paparazziQueue": [
-                "snapshot",
-                "spell",
-                "intel",
-                "translation"
-            ],
-            "augloopQueue": [
-                "augmentation"
-            ],
+            "paparazziQueue": ["snapshot", "spell", "intel", "translation"],
+            "augloopQueue": ["augmentation"],
             "headlessQueue": [
                 "chain-snapshot",
                 "chain-intel",
@@ -210,8 +199,8 @@
     "worker": {
         "alfredUrl": "http://alfred:3003",
         "serverUrl": "http://localhost:3003",
-        "blobStorageUrl": "http://historian:3000",
-        "internalBlobStorageUrl": "http://historian:3000",
+        "blobStorageUrl": "http://historian:3001",
+        "internalBlobStorageUrl": "http://historian:3001",
         "permission": [
             "snapshot",
             "spell",
@@ -229,7 +218,7 @@
             "key": "create-new-tenants-if-going-to-production",
             "storage": {
                 "historianUrl": "http://localhost:3001",
-                "internalHistorianUrl": "http://historian:3000",
+                "internalHistorianUrl": "http://historian:3001",
                 "url": "http://gitrest:3000",
                 "owner": "fluid",
                 "repository": "fluid"
@@ -240,7 +229,7 @@
             "key": "create-new-tenants-if-going-to-production",
             "storage": {
                 "historianUrl": "http://localhost:3001",
-                "internalHistorianUrl": "http://historian:3000",
+                "internalHistorianUrl": "http://historian:3001",
                 "url": "https://api.github.com",
                 "owner": "gitrepoowner",
                 "repository": "gitrepo",
@@ -255,7 +244,7 @@
             "key": "create-new-tenants-if-going-to-production",
             "storage": {
                 "historianUrl": "http://localhost:3001",
-                "internalHistorianUrl": "http://historian:3000",
+                "internalHistorianUrl": "http://historian:3001",
                 "url": "http://gitrest:3000",
                 "owner": "prague",
                 "repository": "local"

@@ -3,8 +3,11 @@
 
 FROM node:12.22.1-slim AS base
 
+RUN sed -i s@/deb.debian.org/@/mirrors.tencent.com/@g /etc/apt/sources.list
+RUN sed -i s@/security.debian.org/@/mirrors.tencent.com/@g /etc/apt/sources.list
+
 # node-gyp dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get clean all && apt-get update && apt-get install -y \
     python3 \
     make \
     git \
@@ -12,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     g++ \
     openssl \
     libssl-dev \
-    ca-certificates
+    ca-certificates telnet
 
 # Add Tini
 ENV TINI_VERSION v0.18.0

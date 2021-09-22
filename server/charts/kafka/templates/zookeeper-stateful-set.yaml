@@ -24,7 +24,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: zookeeper
-        image: wurstmeister/zookeeper
+        image: cloudstudio-devops-docker.pkg.coding.net/artifacts/routerlicious/zookeeper:latest
         ports:
         - name: zookeeper
           containerPort: 2181
@@ -36,7 +36,7 @@ spec:
       name: data
     spec:
       storageClassName: managed-premium
-      accessModes: 
+      accessModes:
         - ReadWriteOnce
       resources:
         requests:
